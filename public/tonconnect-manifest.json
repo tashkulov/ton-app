@@ -1,0 +1,7 @@
+{
+  "url": "http://localhost:5173",
+  "name": "TON Swap",
+  "iconUrl": "http://localhost:5173/vite.svg",
+  "termsOfUseUrl": "https://ton.org/terms",
+  "privacyPolicyUrl": "https://ton.org/privacy"
+}
