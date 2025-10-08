@@ -31,15 +31,7 @@ function App() {
 
           <footer className="app-footer">
             <p>
-              Powered by{' '}
-              <a
-                href="https://ston.fi"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                STON.fi
-              </a>{' '}
-              on TON Testnet
+              Test Task Nurislam :)
             </p>
           </footer>
         </div>
