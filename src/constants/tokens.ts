@@ -1,3 +1,4 @@
+// constants/tokens.ts
 export interface Token {
   symbol: string;
   name: string;
@@ -6,24 +7,14 @@ export interface Token {
   image?: string;
 }
 
-// STON.fi Testnet tokens
-export const TESTNET_TOKENS: Token[] = [
+export const TON_PSEUDO = 'EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c';
+
+export const MAINNET_TOKENS: Token[] = [
+  { symbol: 'TON', name: 'Toncoin', address: TON_PSEUDO, decimals: 9 },
   {
-    symbol: 'TON',
-    name: 'Toncoin',
-    address: 'EQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM9c', // Native TON
-    decimals: 9,
-  },
-  {
-    symbol: 'jUSDT',
-    name: 'Testnet jUSDT',
-    address: 'EQBynBO23ywHy_CgarY9NK9FTz0yDsG82PtcbSTQgGoXwiuA',
-    decimals: 6,
-  },
-  {
-    symbol: 'jUSDC',
-    name: 'Testnet jUSDC',
-    address: 'EQB-MPwrd1G6WKNkLz_VnV6WqBDd142KMQv-g1O-8QUA3728',
+    symbol: 'USDT',
+    name: 'Tether USD',
+    address: 'EQCxE6mUtQJKFnGfaROTKOt1lZbDiiX1kCixRv7Nw2Id_sDs',
     decimals: 6,
   },
   {
@@ -34,10 +25,9 @@ export const TESTNET_TOKENS: Token[] = [
   },
 ];
 
-export const getTokenByAddress = (address: string): Token | undefined => {
-  return TESTNET_TOKENS.find(token => token.address === address);
-};
+export const TOKENS = MAINNET_TOKENS;
 
-export const getTokenBySymbol = (symbol: string): Token | undefined => {
-  return TESTNET_TOKENS.find(token => token.symbol === symbol);
-};
+export const getTokenByAddress = (addr: string) =>
+  TOKENS.find(t => t.address === addr);
+export const getTokenBySymbol = (sym: string) =>
+  TOKENS.find(t => t.symbol.toUpperCase() === sym.toUpperCase());

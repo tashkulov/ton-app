@@ -1,7 +1,6 @@
 {
-  "url": "http://localhost:5173",
+  "url": "https://ton-app-one.vercel.app",
   "name": "TON Swap",
-  "iconUrl": "http://localhost:5173/vite.svg",
   "termsOfUseUrl": "https://ton.org/terms",
   "privacyPolicyUrl": "https://ton.org/privacy"
 }

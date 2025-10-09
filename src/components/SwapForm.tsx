@@ -15,7 +15,7 @@ import {
   resetSwap,
 } from '../store/slices/swapSlice';
 import { TokenSelector } from './TokenSelector';
-import { TESTNET_TOKENS } from '../constants/tokens';
+import { MAINNET_TOKENS as TOKENS } from '../constants/tokens';
 import { formatAmount, fromNano } from '../utils/format';
 import {
   estimateSwap,
@@ -28,6 +28,7 @@ export const SwapForm = () => {
   const [tonConnectUI] = useTonConnectUI();
   const address = useTonAddress();
   const dispatch = useAppDispatch();
+
   const {
     fromToken,
     toToken,
@@ -44,12 +45,8 @@ export const SwapForm = () => {
   const [estimating, setEstimating] = useState(false);
 
   useEffect(() => {
-    if (!fromToken) {
-      dispatch(setFromToken(TESTNET_TOKENS[0]));
-    }
-    if (!toToken) {
-      dispatch(setToToken(TESTNET_TOKENS[1]));
-    }
+    if (!fromToken) dispatch(setFromToken(TOKENS[0]));
+    if (!toToken) dispatch(setToToken(TOKENS[1]));
   }, []);
 
   useEffect(() => {
@@ -63,7 +60,6 @@ export const SwapForm = () => {
 
   const estimateSwapAmount = async () => {
     if (!fromAmount || !fromToken || !toToken || !address) return;
-
     try {
       setEstimating(true);
 
@@ -98,12 +94,10 @@ export const SwapForm = () => {
       dispatch(setError('Please connect your wallet first'));
       return;
     }
-
     if (!fromToken || !toToken || !fromAmount || parseFloat(fromAmount) <= 0) {
       dispatch(setError('Please fill in all fields'));
       return;
     }
-
     if (!toAmount || parseFloat(toAmount) <= 0) {
       dispatch(setError('Cannot estimate swap output. Try again.'));
       return;
@@ -125,11 +119,14 @@ export const SwapForm = () => {
       const result = await tonConnectUI.sendTransaction(transaction);
       console.log('Transaction sent:', result);
 
-      let explorerUrl = getWalletExplorerUrl(address, true);
+      // mainnet: больше не передаём isTestnet
+      let explorerUrl = getWalletExplorerUrl(address);
       try {
-        const polledUrl = await pollLatestTxUrl(address, { isTestnet: true });
+        const polledUrl = await pollLatestTxUrl(address);
         if (polledUrl) explorerUrl = polledUrl;
-      } catch {}
+      } catch (error) {
+        console.log(error);
+      }
 
       dispatch(setSuccess(explorerUrl));
     } catch (err: unknown) {
@@ -139,14 +136,10 @@ export const SwapForm = () => {
       if (err instanceof Error) {
         errorMessage = err.message;
       } else if (typeof err === 'object' && err !== null && 'message' in err) {
-        errorMessage = String(err.message);
+        errorMessage = String((err as any).message);
       }
 
-      if (
-        errorMessage.includes('reject') ||
-        errorMessage.includes('cancel') ||
-        errorMessage.includes('denied')
-      ) {
+      if (/reject|cancel|denied/i.test(errorMessage)) {
         errorMessage = 'Transaction rejected by user';
       }
 

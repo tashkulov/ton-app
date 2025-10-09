@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { Token } from '../constants/tokens';
-import { TESTNET_TOKENS } from '../constants/tokens';
+import { MAINNET_TOKENS } from '../constants/tokens';
 
 interface TokenSelectorProps {
   selectedToken: Token | null;
@@ -17,7 +17,7 @@ export const TokenSelector = ({
 }: TokenSelectorProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const availableTokens = TESTNET_TOKENS.filter(
+  const availableTokens = MAINNET_TOKENS.filter(
     token => token.address !== excludeToken?.address
   );
 
